@@ -45,6 +45,7 @@ class User
     private $email;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\BlogPost", mappedBy="author")
      * @ApiSubresource
      */
     
@@ -54,6 +55,12 @@ class User
      * @ORM\Column(type="simple_array")
      */
     private $roles = [];
+
+    public function __construct()
+    {
+        $posts = new ArrayCollection();
+        $this->setPosts($posts);
+    }
 
     public function getId(): ?int
     {
@@ -128,8 +135,11 @@ class User
     {
         return $this->posts;
     }
-    public function setPosts(Collection $posts)
+    public function setPosts(Collection $posts): self
     {
         $this->posts = $posts;
+
+        return $this;
     }
+
 }

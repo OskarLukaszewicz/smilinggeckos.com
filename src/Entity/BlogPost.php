@@ -2,8 +2,11 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Repository\BlogPostRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -35,15 +38,27 @@ class BlogPost
     private $content;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class)
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="posts")
      * @ORM\JoinColumn(nullable=false)
      */
     private $author;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="blogPost")
+     * @ApiSubresource
+     */
+    private $comments;
+
+    /**
+     * @ORM\Column(type="string", length=255)
      */
     private $slug;
+
+    public function __construct()
+    {
+        $comments = new ArrayCollection();
+        $this->setComments($comments);
+    }
 
     public function getId(): ?int
     {
@@ -106,6 +121,18 @@ class BlogPost
     public function setSlug(?string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
+    public function setComments(Collection $comments): self
+    {
+        $this->comments = $comments;
 
         return $this;
     }

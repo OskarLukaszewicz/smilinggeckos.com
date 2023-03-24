@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CommentsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ApiResource()
  * @ORM\Entity(repositoryClass=CommentsRepository::class)
  */
-class Comments
+class Comment
 {
     /**
      * @ORM\Id
@@ -34,6 +34,12 @@ class Comments
      * @ORM\Column(type="datetime")
      */
     private $published;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\BlogPost", inversedBy="comments")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $blogPost;
 
     public function getId(): ?int
     {
@@ -75,4 +81,17 @@ class Comments
 
         return $this;
     }
+
+    public function getBlogPost() 
+    {
+        return $this->blogPost;
+    }
+
+    public function setBlogPost(BlogPost $blogPost): self
+    {
+        $this->blogPost = $blogPost;
+
+        return $this;
+    }
+
 }

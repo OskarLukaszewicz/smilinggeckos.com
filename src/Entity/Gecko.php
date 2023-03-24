@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\GeckosRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ApiResource()
  * @ORM\Entity(repositoryClass=GeckosRepository::class)
  */
-class Geckos
+class Gecko
 {
     /**
      * @ORM\Id
@@ -47,6 +47,12 @@ class Geckos
      * @ORM\Column(type="string")
      */
     private $filename;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Reservation", inversedBy="gecks")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $reservation;
     
 
     public function getId(): ?int
@@ -123,6 +129,18 @@ class Geckos
     {
         $this->filename = $filename;
         
+        return $this;
+    }
+
+    public function getReservation()
+    {
+        return $this->reservation;
+    }
+
+    public function setReservation(Reservation $reservation)
+    {
+        $this->reservation = $reservation;
+
         return $this;
     }
 }
