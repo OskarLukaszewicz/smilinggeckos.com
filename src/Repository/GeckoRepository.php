@@ -2,26 +2,26 @@
 
 namespace App\Repository;
 
-use App\Entity\Geckos;
+use App\Entity\Gecko;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Geckos>
+ * @extends ServiceEntityRepository<Gecko>
  *
- * @method Geckos|null find($id, $lockMode = null, $lockVersion = null)
- * @method Geckos|null findOneBy(array $criteria, array $orderBy = null)
- * @method Geckos[]    findAll()
- * @method Geckos[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Gecko|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Gecko|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Gecko[]    findAll()
+ * @method Gecko[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class GeckosRepository extends ServiceEntityRepository
+class GeckoRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Geckos::class);
+        parent::__construct($registry, Gecko::class);
     }
 
-    public function add(Geckos $entity, bool $flush = false): void
+    public function add(Gecko $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +30,7 @@ class GeckosRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(Geckos $entity, bool $flush = false): void
+    public function remove(Gecko $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -40,7 +40,7 @@ class GeckosRepository extends ServiceEntityRepository
     }
 
 //    /**
-//     * @return Geckos[] Returns an array of Geckos objects
+//     * @return Gecko[] Returns an array of Gecko objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -54,7 +54,7 @@ class GeckosRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Geckos
+//    public function findOneBySomeField($value): ?Gecko
 //    {
 //        return $this->createQueryBuilder('g')
 //            ->andWhere('g.exampleField = :val')

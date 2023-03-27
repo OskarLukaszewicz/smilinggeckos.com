@@ -3,14 +3,40 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\GeckosRepository;
+use App\Controller\CreateGeckoAction;
+use App\Entity\EntityInterface\DateTimeEntityInterface;
+use App\Repository\GeckoRepository;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\File;
+
+
 
 /**
- * @ApiResource()
- * @ORM\Entity(repositoryClass=GeckosRepository::class)
+ * @ORM\Entity(repositoryClass=GeckoRepository::class)
+ * @Vich\Uploadable
+ * @ApiResource(
+ *      itemOperations={
+ *          "get",
+ *          "put"
+ *      },
+ *      collectionOperations={
+ *          "post"={
+ *              "method"="POST",
+ *              "controller"=CreateGeckoAction::class,
+ *              "defaults"={"_api_receive"=false},
+ *              "denormalization_context"={
+ *                  "groups"={"post-by-form"}
+ *              },
+ *          },
+ *          "get",
+ *      }
+ * )
  */
-class Gecko
+class Gecko implements DateTimeEntityInterface
 {
     /**
      * @ORM\Id
@@ -21,21 +47,25 @@ class Gecko
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("post-by-form")
      */
     private $name;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("post-by-form")
      */
     private $sex;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups("post-by-form")
      */
     private $price;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups("post-by-form")
      */
     private $geckType;
 
@@ -44,16 +74,20 @@ class Gecko
      */
     private $reserved;
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $filename;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Reservation", inversedBy="gecks")
-     * @ORM\JoinColumn(nullable=true)
+     /**
+     * @Vich\UploadableField(mapping="images", fileNameProperty="filename")
      */
-    private $reservation;
-    
+    private $file;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
 
     public function getId(): ?int
     {
@@ -72,12 +106,12 @@ class Gecko
         return $this;
     }
 
-    public function isSex(): ?bool
+    public function getSex(): ?string
     {
         return $this->sex;
     }
 
-    public function setSex(?bool $sex): self
+    public function setSex(?string $sex): self
     {
         $this->sex = $sex;
 
@@ -120,7 +154,7 @@ class Gecko
         return $this;
     }
 
-    public function getFilename()
+    public function getFilename(): string
     {
         return $this->filename;
     }
@@ -132,15 +166,47 @@ class Gecko
         return $this;
     }
 
-    public function getReservation()
+    public function getFile(): ?File
     {
-        return $this->reservation;
+        return $this->file;
     }
 
-    public function setReservation(Reservation $reservation)
+    public function setFile(File $file = null): void
     {
-        $this->reservation = $reservation;
+        $this->file = $file;
+
+        if ($file) 
+        {
+            $this->setCreatedAt(new DateTime('now'));
+        }
+    }
+
+    public function getCreatedAt(): DateTime
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(DateTime $dateTime): DateTimeEntityInterface
+    {
+        $this->createdAt = $dateTime;
 
         return $this;
+    }
+
+    // public function getReservation()
+    // {
+    //     return $this->reservation;
+    // }
+
+    // public function setReservation(Reservation $reservation)
+    // {
+    //     $this->reservation = $reservation;
+
+    //     return $this;
+    // }
+
+    public function __toString(): string
+    {
+        return $this->id . "." . $this->name . " " . $this->sex;
     }
 }

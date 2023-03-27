@@ -3,14 +3,24 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\CommentsRepository;
+use App\Entity\EntityInterface\DateTimeEntityInterface;
+use App\Repository\CommentRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource()
- * @ORM\Entity(repositoryClass=CommentsRepository::class)
+ * @ApiResource(
+ *      itemOperations={
+ *          "get",
+ *          "put"
+ *      },
+ *      collectionOperations={
+ *          "get",
+ *          "post"
+ *      }
+ * )
+ * @ORM\Entity(repositoryClass=CommentRepository::class)
  */
-class Comment
+class Comment implements DateTimeEntityInterface
 {
     /**
      * @ORM\Id
@@ -25,15 +35,14 @@ class Comment
     private $content;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="string", length=255)
      */
-    private $author;
+    private $authorName;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $published;
+    private $createdAt;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\BlogPost", inversedBy="comments")
@@ -58,26 +67,26 @@ class Comment
         return $this;
     }
 
-    public function getAuthor(): ?User
+    public function getAuthorName()
     {
-        return $this->author;
+        return $this->authorName;
     }
 
-    public function setAuthor(?User $author): self
+    public function setAuthorName(string $authorName): self
     {
-        $this->author = $author;
+        $this->authorName = $authorName;
 
         return $this;
     }
 
-    public function getPublished(): ?\DateTimeInterface
+    public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->published;
+        return $this->createdAt;
     }
 
-    public function setPublished(\DateTimeInterface $published): self
+    public function setCreatedAt(\DateTimeInterface $createdAt): DateTimeEntityInterface
     {
-        $this->published = $published;
+        $this->createdAt = $createdAt;
 
         return $this;
     }

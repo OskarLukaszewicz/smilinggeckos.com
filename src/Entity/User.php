@@ -12,7 +12,12 @@ use Doctrine\Common\Collections\Collection;
 
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *      itemOperations={
+ *          "get"    
+ *      },
+ *      collectionOperations={}
+ * )
  * @ORM\Entity(repositoryClass=UserRepository::class)
  */
 class User

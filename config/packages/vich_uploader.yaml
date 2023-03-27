@@ -1,0 +1,12 @@
+vich_uploader:
+  db_driver: orm
+
+  mappings:
+    images:
+      uri_prefix: /images
+      upload_destination: "%kernel.project_dir%/public/images"
+      namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+# uri prefix - by what uri to find our resource
+# upload destination - a path to upload destination
+# SmartUniqeNamer - advanced namer, creates a filename based on old filename and uniqid
+

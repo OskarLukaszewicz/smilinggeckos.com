@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+
+        {{ form_start(form) }}
+            {{ form_row(form.accepted)}}
+            {{ form_row(form.email)}}
+            {{ form_row(form.phoneNumber)}}
+            {{ form_row(form.message)}}
+        {{ form_end(form) }}
+
+        <h3>Gekony:</h3>
+            <ul class="reservationGecksList">
+                {% for gecko in gecks %}
+                    <li> {{ gecko }} </li>
+                {% endfor %}
+            </ul>
+
+        
+    </body>
+</html>

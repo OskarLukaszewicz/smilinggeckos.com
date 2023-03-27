@@ -4,16 +4,31 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
+use App\Entity\EntityInterface\DateTimeEntityInterface;
 use App\Repository\ReservationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\JoinTable;
+use Doctrine\ORM\Mapping\ManyToMany;
+
+
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *      itemOperations={
+ *          "get",
+ *          "put",
+ *      },
+ *      collectionOperations={
+ *          "get",
+ *          "post"
+ *      }
+ * )
  * @ORM\Entity(repositoryClass=ReservationRepository::class)
  */
-class Reservation
+class Reservation implements DateTimeEntityInterface
 {
     /**
      * @ORM\Id
@@ -23,8 +38,11 @@ class Reservation
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Gecko", mappedBy="reservation")
-     * @ApiSubresource
+     * @ManyToMany(targetEntity="App\Entity\Gecko")
+     * @JoinTable(name="reserved_geckos",
+     *      joinColumns={@JoinColumn(name="reservation_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@JoinColumn(name="gecko_id", referencedColumnName="id", unique=true)}
+     *      )
      */
     private $gecks;
 
@@ -51,12 +69,12 @@ class Reservation
     /**
      * @ORM\Column(type="datetime")
      */
-    private $reservationDate;
+    private $createdAt;
 
     public function __construct()
     {
         $gecks = new ArrayCollection();
-        $this->setGecks($gecks)
+        $this->setGecks($gecks);
     }
 
     public function getGecks()
@@ -66,7 +84,14 @@ class Reservation
 
     public function setGecks(Collection $gecks): self
     {
-        $this->gecks = $gecks
+        $this->gecks = $gecks;
+
+        return $this;
+    }
+
+    public function addGecko($gecko)
+    {
+        $this->gecks->add($gecko);
 
         return $this;
     }
@@ -124,14 +149,14 @@ class Reservation
         return $this;
     }
 
-    public function getReservationDate(): ?\DateTimeInterface
+    public function getcreatedAt(): ?\DateTimeInterface
     {
-        return $this->reservationDate;
+        return $this->createdAt;
     }
 
-    public function setReservationDate(\DateTimeInterface $reservationDate): self
+    public function setcreatedAt(\DateTimeInterface $createdAt): DateTimeEntityInterface
     {
-        $this->reservationDate = $reservationDate;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
