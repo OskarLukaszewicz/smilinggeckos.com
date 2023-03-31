@@ -104,12 +104,12 @@ class AppFixtures extends Fixture
     {
         for($i=0; $i<20; $i++)
         {
-            if($this->faker->boolean(85)) {
+            if($this->faker->boolean(80)) {
                 continue;
             }
 
             $reservation = new Reservation();
-            $reservation->setAccepted(rand(0, 1));
+
             $reservation->setMessage($this->faker->realText(30));
             $reservation->setPhoneNumber($this->faker->e164PhoneNumber);
             $reservation->setEmail($this->faker->email);
@@ -119,17 +119,18 @@ class AppFixtures extends Fixture
 
             for($j=0; $j<20; $j++)
             {
-                if($this->faker->boolean(50)) {
+                if($this->faker->boolean(80)) {
                     continue;
                 }
 
                 $gecko = $this->getReference("gecko_" . $j);
 
-                if ($gecko->isReserved()) {
+                if ($gecko->isRequestedForReservation()) {
                     continue;
                 }
 
-                $gecko->setReserved(1);
+                $gecko->setRequestedForReservation(1);
+
                 $reservation->addGecko($gecko);
 
                 // $gecks->add($this->getReference("gecko_" . $j));
@@ -160,6 +161,7 @@ class AppFixtures extends Fixture
             $gecko->setPrice(rand(2, 9) * 100);
             $gecko->setGeckType(rand(1,3));
             $gecko->setReserved(false);
+            $gecko->setRequestedForReservation(false);
             $gecko->setFilename(str_replace(" ", "", $geckoName . ".img"));
             $gecko->setCreatedAt($this->faker->dateTimeBetween('-10 days', 'now'));
 

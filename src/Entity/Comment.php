@@ -5,7 +5,9 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\EntityInterface\DateTimeEntityInterface;
 use App\Repository\CommentRepository;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use DateTime;
 
 /**
  * @ApiResource(
@@ -40,7 +42,7 @@ class Comment implements DateTimeEntityInterface
     private $authorName;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $createdAt;
 
@@ -79,17 +81,18 @@ class Comment implements DateTimeEntityInterface
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?DateTime
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): DateTimeEntityInterface
+    public function setCreatedAt(DateTimeInterface $createdAt): DateTimeEntityInterface
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
+
 
     public function getBlogPost() 
     {

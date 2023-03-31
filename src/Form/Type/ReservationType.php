@@ -22,14 +22,13 @@ class ReservationType extends AbstractType
         $resolver->setDefaults([
             'gecko' => null,
             'data_class' => Reservation::class,
-            'csrf_protection' => false,
         ]);
     }
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add("accepted", HiddenType::class, [
-                'data' => false
+                'empty_data' => false
             ])
             ->add("email", EmailType::class,[
                 "label" => "Adres e-mail*"

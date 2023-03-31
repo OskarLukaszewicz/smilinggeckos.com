@@ -23,9 +23,12 @@ class CreationDateEntitySubscriber implements EventSubscriberInterface
         $method = $event->getRequest()->getMethod();
         $dateTimeEntity = $event->getControllerResult();
 
-        if ($method === Request::METHOD_POST && $dateTimeEntity instanceof DateTimeEntityInterface)
+        if ($method != Request::METHOD_POST || !$dateTimeEntity instanceof DateTimeEntityInterface)
         {
-            $dateTimeEntity->setCreatedAt(new DateTime('now'));
+            return;
         }
+
+        $dateTimeEntity->setCreatedAt(new DateTime());
+        
     }
 }

@@ -6,9 +6,12 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Entity\EntityInterface\DateTimeEntityInterface;
 use App\Repository\BlogPostRepository;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use DateTime;
+
 
 /**
  * @ApiResource(
@@ -37,7 +40,7 @@ class BlogPost implements DateTimeEntityInterface
     private $title;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $createdAt;
 
@@ -86,17 +89,18 @@ class BlogPost implements DateTimeEntityInterface
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?DateTime
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): DateTimeEntityInterface
+    public function setCreatedAt(DateTimeInterface $createdAt): DateTimeEntityInterface
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
+
 
     public function getContent(): ?string
     {

@@ -3,14 +3,19 @@
 namespace App\Controller;
 use App\Entity\Gecko;
 use App\Entity\Reservation;
+use App\Exception\ItemAlreadyReservedException;
 use App\Form\Type\ReservationType;
 use App\Service\ByIdFetcher;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
+
 
 class ReservationPageController extends AbstractController
 {
@@ -23,18 +28,35 @@ class ReservationPageController extends AbstractController
     }
 
     /**
-     * @Route("/reservation_page/{id}", name="reservation_page")
+     * @Route("/reservation_page/{ids}", name="reservation_page")
      */
-    public function reservationPage(Gecko $gecko, Request $request): Response
+    public function reservationPage(Request $request, $ids): Response
     {
-        $repository = $this->doctrine
-                           ->getManager()
-                           ->getRepository(Gecko::class);
+
+        $intIds = array_map('intval', explode(",", $ids));
+
+        $em = $this->doctrine->getManager();
 
         // $ids = $request->request->all();
-        $ids = [35, 36, 37, 38, 39, 40];
+        // $ids = [131, 132, 133, 134, 135, 136, 137];
 
-        $gecks = $this->fetcher->fetchById($ids, $repository);
+        $gecks = $this->fetcher->fetchForReferencesById(Gecko::class, $intIds, $em);
+
+        foreach( $gecks as $gecko ) {
+            if($gecko->isReserved()) {
+                $message = "Gekon ";
+                $message .= $gecko;
+                $message .= " jest juz zarezerwowany";
+
+                throw new ItemAlreadyReservedException($message);
+            }
+        }
+
+        if ($gecks->count() != count($intIds)) {
+            throw $this->createNotFoundException(
+                "Nie znaleziono wszystkich elementów"
+            );
+        }
 
         $reservation = new Reservation();
 
@@ -44,11 +66,22 @@ class ReservationPageController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) { 
-            dump($form);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $em->persist($form->getData()->setCreatedAt(new DateTime()));
+            try {
+                $em->flush();
+            } catch (Exception $e) {
+                if($e->getCode() === 19) {
+                    throw new ItemAlreadyReservedException();
+                }
+            }
+            // dump($form->getData());
         }
 
-        return $this->renderForm('reservation/reservation.html.twig', [
+        // ToDo jeśli nie ma gekonow w post, to wróc
+
+        return $this->renderForm('reservations/reservationFormPage.html.twig', [
             'form' => $form,
             'gecks' => $gecks
         ]);

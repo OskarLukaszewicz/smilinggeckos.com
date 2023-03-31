@@ -6,12 +6,14 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Entity\EntityInterface\DateTimeEntityInterface;
 use App\Repository\ReservationRepository;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\ORM\Mapping\ManyToMany;
+use DateTime;
 
 
 
@@ -47,9 +49,10 @@ class Reservation implements DateTimeEntityInterface
     private $gecks;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $accepted;
+
 
     /**
      * @ORM\Column(type="text")
@@ -67,7 +70,7 @@ class Reservation implements DateTimeEntityInterface
     private $email;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $createdAt;
 
@@ -113,6 +116,7 @@ class Reservation implements DateTimeEntityInterface
         return $this;
     }
 
+
     public function getMessage(): ?string
     {
         return $this->message;
@@ -149,12 +153,12 @@ class Reservation implements DateTimeEntityInterface
         return $this;
     }
 
-    public function getcreatedAt(): ?\DateTimeInterface
+    public function getcreatedAt(): ?DateTime
     {
         return $this->createdAt;
     }
 
-    public function setcreatedAt(\DateTimeInterface $createdAt): DateTimeEntityInterface
+    public function setCreatedAt(DateTimeInterface $createdAt): DateTimeEntityInterface
     {
         $this->createdAt = $createdAt;
 

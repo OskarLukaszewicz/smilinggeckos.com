@@ -7,6 +7,7 @@ use App\Controller\CreateGeckoAction;
 use App\Entity\EntityInterface\DateTimeEntityInterface;
 use App\Repository\GeckoRepository;
 use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -73,6 +74,12 @@ class Gecko implements DateTimeEntityInterface
      * @ORM\Column(type="boolean")
      */
     private $reserved;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $requestedForReservation; 
+
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
@@ -84,7 +91,7 @@ class Gecko implements DateTimeEntityInterface
     private $file;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $createdAt;
 
@@ -147,6 +154,7 @@ class Gecko implements DateTimeEntityInterface
         return $this->reserved;
     }
 
+
     public function setReserved(bool $reserved): self
     {
         $this->reserved = $reserved;
@@ -177,7 +185,7 @@ class Gecko implements DateTimeEntityInterface
 
         if ($file) 
         {
-            $this->setCreatedAt(new DateTime('now'));
+            $this->setCreatedAt(new DateTime());
         }
     }
 
@@ -186,9 +194,21 @@ class Gecko implements DateTimeEntityInterface
         return $this->createdAt;
     }
 
-    public function setCreatedAt(DateTime $dateTime): DateTimeEntityInterface
+    public function setCreatedAt(DateTimeInterface $createdAt): DateTimeEntityInterface
     {
-        $this->createdAt = $dateTime;
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function isRequestedForReservation(): bool
+    {
+        return $this->requestedForReservation;
+    }
+
+    public function setRequestedForReservation(bool $requested): self
+    {
+        $this->requestedForReservation = $requested;
 
         return $this;
     }

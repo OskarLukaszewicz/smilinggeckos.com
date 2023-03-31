@@ -1,0 +1,32 @@
+<div>
+    <table class="table table-bordered table-striped table-hover">
+        <tr>
+            <th>Id</th>
+            <th>Numer telefonu</th>
+            <th>Email</th>
+            <th>Wiadomość</th>
+            <th>Gekony</th>
+            <th>Data</th>
+            <th>Rezerwacja</th>
+        </tr>
+        {% for reservation in reservations %}
+            {% if reservation.accepted is same as(false) %}
+                <tr>
+                    <td>{{ reservation.id }}</td>
+                    <td> {{ reservation.phoneNumber }} </td>
+                    <td> {{ reservation.email }} </td>
+                    <td> {{ reservation.message }} </td>
+                    <td>
+                        <ul style="list-style-type:none;">
+                            {% for geck in reservation.gecks %} 
+                                <li>{{ geck }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td> {{ reservation.createdAt|date("d/m/Y h:m:s") }} </td>
+                    <td> <button>Usuń</button> </td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
+<div>
