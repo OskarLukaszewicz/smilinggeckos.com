@@ -2,23 +2,24 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\BlogPost;
+use App\Entity\Gecko;
 use App\Entity\Reservation;
+use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\Comment;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Vich\UploaderBundle\Entity\File;
+
+
 
 class DashboardController extends AbstractDashboardController
 {
-    private $doctrine;
-
-    public function __construct(ManagerRegistry $doctrine)
-    {
-        $this->doctrine = $doctrine;
-    }
 
     /**
      * @Route("/admin", name="admin")
@@ -29,50 +30,6 @@ class DashboardController extends AbstractDashboardController
 
     }
 
-    /**
-     * @Route("/admin/reservation_list", name="reservation_list")
-     */
-    public function reservationList(): Response
-    {
-        $em = $this->doctrine->getManager();
-        $repository = $em->getRepository(Reservation::class);
-        $reservations = $repository->findBy([], ['createdAt' => 'DESC']);
-
-        return $this->render('@reservations/reservationListAdmin.html.twig', [
-            'reservations' => $reservations,
-        ]);
-    }
-
-    /**
-     * @Route("/admin/reservation_list/{id}/accept_reservation", name="accept_reservation", requirements={"id" = "\d+"} )
-     */
-    public function AcceptReservation(int $id): Response
-    {
-        $em = $this->doctrine->getManager();
-        $repository = $em->getRepository(Reservation::class);
-        $reservation = $repository->find($id);
-        $reservation->setAccepted(true);
- 
-        $em->flush();
-
-        return new RedirectResponse($this->generateUrl("reservation_list"));
-    }
-
-    /**
-     * @Route("/admin/reservation_list/{id}/decline_reservation", name="decline_reservation", requirements={"id" = "\d+"} )
-     */
-    public function DeclineReservation(int $id): Response
-    {
-        $em = $this->doctrine->getManager();
-        $repository = $em->getRepository(Reservation::class);
-        $reservation = $repository->find($id);
-        $reservation->setAccepted(false);
-
-        $em->flush();
-
-
-        return new RedirectResponse($this->generateUrl("reservation_list"));
-    }
 
     public function configureDashboard(): Dashboard
     {
@@ -83,6 +40,12 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
+        yield MenuItem::linkToCrud('Rezerwacje', 'fa fa-ticket', Reservation::class);
+        yield MenuItem::linkToCrud('Gekony', 'fa fa-shekel', Gecko::class);
+        yield MenuItem::linkToCrud('Użytkownicy', 'fa fa-user', User::class);
+        yield MenuItem::linkToCrud('Posty', 'fa fa-file-text', BlogPost::class);
+        yield MenuItem::linkToCrud('Komentarze', 'fa fa-comment', Comment::class);
+        yield MenuItem::linkToCrud('Pliki', 'fa fa-file', File::class);
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
     }
 }

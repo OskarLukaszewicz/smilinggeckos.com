@@ -5,9 +5,6 @@ namespace App\Service;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ObjectManager;
 
-
-
-
 class ByIdFetcher
 {   
     public function fetchForReferencesById($entityName, array $ids, ObjectManager $em): ArrayCollection
@@ -17,8 +14,7 @@ class ByIdFetcher
             $itemReference = $em->getReference($entityName ,$id);
             $collection->add($itemReference);
         }
-
-
+        
         return $collection;
     }
 }

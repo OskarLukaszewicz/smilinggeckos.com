@@ -24,7 +24,11 @@
                         </ul>
                     </td>
                     <td> {{ reservation.createdAt|date("d/m/Y h:m:s") }} </td>
-                    <td> <button>Usuń</button> </td>
+                    <td> 
+                        <a href="{{ path('handle_reservation', {'id': reservation.id, 'action': "delete"}) }}">
+                            <button type="button" class="btn btn-warning w-100" >Usuń</button>
+                        </a> 
+                    </td>
                 </tr>
             {% endif %}
         {% endfor %}

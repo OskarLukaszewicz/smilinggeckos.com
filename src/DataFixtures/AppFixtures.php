@@ -109,11 +109,12 @@ class AppFixtures extends Fixture
             }
 
             $reservation = new Reservation();
-
+            $reservation->setUsername($this->faker->userName);
             $reservation->setMessage($this->faker->realText(30));
             $reservation->setPhoneNumber($this->faker->e164PhoneNumber);
             $reservation->setEmail($this->faker->email);
             $reservation->setCreatedAt($this->faker->dateTimeBetween('-10 days', 'now'));
+            $reservation->setUniqId(uniqid());
 
             // $gecks = new ArrayCollection();
 

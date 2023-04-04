@@ -1,0 +1,42 @@
+{% extends "/email/reservationBase.html.twig" %}
+
+{% block style %}
+    {{ parent() }}
+{% endblock %}
+
+{% block container %}
+    <a href="https://smilinggeckos.com" target="_blank"><img class="logo" src="http://localhost:8000/images/logo.jpg"  /></a>
+        <h2>
+            W serwisie zostało złożone nowe <a href="{{ domain }}/admin/reservation_list"  target="_blank"> zamówienie: </a>
+        </h2>
+        <div style="margin:7px">
+        <p>
+            <b>Nazwa użytkownika:</b> {{ reservation.username }}
+        </p>
+        <p>
+            <b>Adres email:</b> {{ reservation.email }}
+        </p>
+        <p>
+            <b>Treść wiadomości:</b> {{ reservation.message }}
+        </p>
+        <p>
+            <b>Nr telefonu:</b> {{ reservation.phoneNumber }}
+        </p>
+        <p>
+            <b>Data utworzenia:</b> {{ reservation.createdAt|date("d/m/Y h:m:s") }}
+        </p>
+        <p>
+            Na liście zarezerwowanych gekonów znajdują się
+        </p>
+        <h3>Gekony:</h3>
+        <ul class="reservationGecksList list-group">
+            {% for gecko in reservation.gecks %}
+                <li class="list-group-item"> {{ gecko }} </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
+
+{% block footer %}
+{{ parent() }}
+{% endblock %}

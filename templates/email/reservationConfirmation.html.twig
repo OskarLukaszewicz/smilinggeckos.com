@@ -1,0 +1,34 @@
+{% extends "/email/reservationBase.html.twig" %}
+
+{% block style %}
+    {{ parent() }}
+{% endblock %}
+
+{% block container %}
+    <a href="https://smilinggeckos.com" target="_blank"><img class="logo" src="http://localhost:8000/images/logo.jpg"  /></a>
+    <h2>
+        Cześć {{ reservation.username }},
+    </h2>
+    <p>
+        otrzymaliśmy informację o złożonej przez Ciebie rezerwacji na stronie hodowlii <a href="https://smilinggeckos.com" target="_blank">SmilingGeckos.</a>
+    </p>
+    <p>
+        Na liście zarezerwowanych gekonów znajdują się
+    </p>
+    <h3>Gekony:</h3>
+    <ul class="reservationGecksList list-group">
+        {% for gecko in reservation.gecks %}
+            <li class="list-group-item"> {{ gecko }} </li>
+        {% endfor %}
+    </ul>
+    <p>
+        Twoje zgłoszenie jest w trakcie rozpatrywania. Wkrótce się z Tobą skontaktujemy!
+    </p>
+    <p>
+        Aby śledzić status rezerwacji kliknij <a href="{{ domain }}/show_reservation/{{ reservation.uniqId }}">tutaj</a>
+    </p>
+{% endblock %}
+
+{% block footer %}
+{{ parent() }}
+{% endblock %}

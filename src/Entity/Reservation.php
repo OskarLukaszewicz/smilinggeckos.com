@@ -14,6 +14,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\ORM\Mapping\ManyToMany;
 use DateTime;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 
@@ -53,9 +54,21 @@ class Reservation implements DateTimeEntityInterface
      */
     private $accepted;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $username;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *      min = 20,
+     *      max = 1000,
+     *      minMessage = "Wiadomość musi zawierać przynajmniej 20 znaków",
+     *      maxMessage = "Wiadomość nie może być dłuższa niż 1000 znaków"
+     * )
+     *)
      */
     private $message;
 
@@ -66,13 +79,27 @@ class Reservation implements DateTimeEntityInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $email;
 
     /**
+     * @Assert\NotBlank()
+     * @Assert\Expression(
+     *      "this.getEmail() === this.getRetypedEmail()",
+     *      message="Adresy email nie są identyczne",
+     * )
+     */
+    private $retypedEmail;
+    /**
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $createdAt;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $uniqId;
 
     public function __construct()
     {
@@ -152,6 +179,18 @@ class Reservation implements DateTimeEntityInterface
 
         return $this;
     }
+    public function getRetypedEmail(): ?string
+    {
+        return $this->retypedEmail;
+    }
+
+    public function setRetypedEmail(string $retypedEmail): self
+    {
+        $this->retypedEmail = $retypedEmail;
+
+        return $this;
+    }
+
 
     public function getcreatedAt(): ?DateTime
     {
@@ -161,6 +200,30 @@ class Reservation implements DateTimeEntityInterface
     public function setCreatedAt(DateTimeInterface $createdAt): DateTimeEntityInterface
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
+
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    public function getUniqId(): string
+    {
+        return $this->uniqId;
+    }
+
+    public function setUniqId(string $uniqId): self
+    {
+        $this->uniqId = $uniqId;
 
         return $this;
     }

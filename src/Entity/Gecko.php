@@ -189,7 +189,7 @@ class Gecko implements DateTimeEntityInterface
         }
     }
 
-    public function getCreatedAt(): DateTime
+    public function getCreatedAt(): ?DateTime
     {
         return $this->createdAt;
     }
@@ -212,18 +212,6 @@ class Gecko implements DateTimeEntityInterface
 
         return $this;
     }
-
-    // public function getReservation()
-    // {
-    //     return $this->reservation;
-    // }
-
-    // public function setReservation(Reservation $reservation)
-    // {
-    //     $this->reservation = $reservation;
-
-    //     return $this;
-    // }
 
     public function __toString(): string
     {
