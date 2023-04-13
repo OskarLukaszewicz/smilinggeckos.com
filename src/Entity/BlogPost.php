@@ -11,18 +11,27 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use DateTime;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 
 
 /**
  * @ApiResource(
- * itemOperations={
- *          "get",
- *          "put"  
+ *      itemOperations={
+ *          "get"={
+ *              "normalization_context"={
+ *                  "groups"={"get-blog-post-with-comments"}
+ *              }
+ *          }
  *      },
  *      collectionOperations={
- *          "get",
- *          "post"       
- * })
+ *          "get"={
+ *              "normalization_context"={
+ *                  "groups"={"get-blog-posts"}
+ *              }
+ *          }
+ *      }
+ * )
  * @ORM\Entity(repositoryClass=BlogPostRepository::class)
  */
 class BlogPost implements DateTimeEntityInterface
@@ -36,40 +45,56 @@ class BlogPost implements DateTimeEntityInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"get-blog-posts", "get-blog-post-with-comments"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"get-blog-posts", "get-blog-post-with-comments"})
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups({"get-blog-posts", "get-blog-post-with-comments"})
      */
     private $content;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="posts")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"get-blog-posts", "get-blog-post-with-comments"})
      */
     private $author;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="blogPost")
      * @ApiSubresource
+     * @Groups({"get-blog-post-with-comments"})
      */
     private $comments;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"get-blog-posts", "get-blog-post-with-comments"})
      */
     private $slug;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Image")
+     * @ORM\JoinTable()
+     * @ApiSubresource()
+     * @Groups({"get-blog-posts", "get-blog-post-with-comments"})
+     */
+    private $images;
 
     public function __construct()
     {
         $comments = new ArrayCollection();
         $this->setComments($comments);
+
+        $this->images = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -148,5 +173,24 @@ class BlogPost implements DateTimeEntityInterface
         $this->comments = $comments;
 
         return $this;
+    }
+
+    public function getImages(): Collection 
+    {
+        return $this->images;
+    }
+    public function addImage(Image $image)
+    {
+        $this->images->add($image);
+    }
+
+    public function removeImage(Image $image)
+    {
+        $this->images->removeElement($image);
+    }
+
+    public function __toString()
+    {
+        return $this->getId() . " " .$this->getTitle();
     }
 }

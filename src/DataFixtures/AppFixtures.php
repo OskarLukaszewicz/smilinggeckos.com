@@ -162,7 +162,6 @@ class AppFixtures extends Fixture
             $gecko->setPrice(rand(2, 9) * 100);
             $gecko->setGeckType(rand(1,3));
             $gecko->setReserved(false);
-            $gecko->setRequestedForReservation(false);
             $gecko->setFilename(str_replace(" ", "", $geckoName . ".img"));
             $gecko->setCreatedAt($this->faker->dateTimeBetween('-10 days', 'now'));
 

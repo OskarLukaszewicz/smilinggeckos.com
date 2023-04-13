@@ -1,4 +1,4 @@
-{% extends "/email/reservationBase.html.twig" %}
+{% extends "/email/reservationEmailBase.html.twig" %}
 
 {% block style %}
     {{ parent() }}
@@ -7,7 +7,7 @@
 {% block container %}
     <a href="https://smilinggeckos.com" target="_blank"><img class="logo" src="http://localhost:8000/images/logo.jpg"  /></a>
         <h2>
-            W serwisie zostało złożone nowe <a href="{{ domain }}/admin/reservation_list"  target="_blank"> zamówienie: </a>
+            W serwisie zostało złożone nowe <a href="{{ domain }}/admin/"  target="_blank"> zamówienie: </a>
         </h2>
         <div style="margin:7px">
         <p>

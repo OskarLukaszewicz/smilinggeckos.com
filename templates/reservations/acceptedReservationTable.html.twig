@@ -2,31 +2,31 @@
     <table class="table table-bordered table-striped table-hover">
         <tr>
             <th>Id</th>
-            <th>Numer telefonu</th>
+            <th>Phone number</th>
             <th>Email</th>
-            <th>Wiadomość</th>
-            <th>Gekony</th>
-            <th>Data</th>
-            <th>Rezerwacja</th>
+            <th>Message</th>
+            <th>Geckos</th>
+            <th>Created</th>
+            <th>Accept</th>
         </tr>
         {% for reservation in reservations %}
             {% if reservation.accepted is same as(true) %}
                 <tr>
                     <td>{{ reservation.id }}</td>
-                    <td> {{ reservation.phoneNumber }} </td>
-                    <td> {{ reservation.email }} </td>
-                    <td> {{ reservation.message }} </td>
-                    <td>
+                    <td class="col-1"> {{ reservation.phoneNumber }} </td>
+                    <td class="col-2" > {{ reservation.email }} </td>
+                    <td class="col-3"> {{ reservation.message }} </td>
+                    <td class="col-3">
                         <ul style="list-style-type:none;">
                             {% for geck in reservation.gecks %} 
                                 <li>{{ geck }}</li>
                             {% endfor %}
                         </ul>
                     </td>
-                    <td> {{ reservation.createdAt|date("d/m/Y h:m:s") }} </td>
+                    <td class="col-2"> {{ reservation.createdAt|date("d/m/Y h:m:s") }} </td>
                     <td> 
                         <a href="{{ path('handle_reservation', {'id': reservation.id, 'action': "delete"}) }}">
-                            <button type="button" class="btn btn-warning w-100" >Usuń</button>
+                            <button type="button" class="btn btn-warning w-100" >Delete</button>
                         </a> 
                     </td>
                 </tr>

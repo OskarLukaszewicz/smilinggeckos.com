@@ -41,21 +41,13 @@ class ReservationType extends AbstractType
             ->add("message", TextareaType::class, [
                 'label' => "Wiadomość*"
             ])
-            ->add('submit', SubmitType::class);
+            ->add('submit', SubmitType::class, [
+                'label' => 'Wyślij',
+                'attr' => ['style' => 'background-color:#ff5722;border-none;',
+                           'class' => 'w-50' 
+                ]
+            ]);
 
-            
-            // ->add("gecks", CollectionType::class, [
-            //     "label" => "Rezerwowane gekony",
-            //     'entry_type' => ChoiceType::class,
-            //     'entry_options' => [
-            //         'choices' => [
-            //             'Gekon' => "eeeeMakarena",
-            //             'Gekoni' => "eeeeMakarenaa",
-            //             'Gekono' => "eeeeMakarenyy", 
-            //         ]
-            //     ]
-            // ]);
-            
     }
     // 'Gekoni' => $options['gecko'],
 

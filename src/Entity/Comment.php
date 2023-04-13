@@ -7,17 +7,17 @@ use App\Entity\EntityInterface\DateTimeEntityInterface;
 use App\Repository\CommentRepository;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 use DateTime;
 
 /**
  * @ApiResource(
  *      itemOperations={
  *          "get",
- *          "put"
  *      },
  *      collectionOperations={
  *          "get",
- *          "post"
  *      }
  * )
  * @ORM\Entity(repositoryClass=CommentRepository::class)
@@ -33,16 +33,19 @@ class Comment implements DateTimeEntityInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"get-blog-post-with-comments"})
      */
     private $content;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"get-blog-post-with-comments"})
      */
     private $authorName;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"get-blog-post-with-comments"})
      */
     private $createdAt;
 

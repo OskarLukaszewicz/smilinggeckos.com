@@ -1,42 +1,53 @@
-<!DOCTYPE html>
-<html class="h-100">
-    <head>
-        <meta charset="UTF-8">
-        {% block stylesheets %}
-            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-        {% endblock %}
-        {% block javascripts %}
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-        {% endblock %}
-    </head>
-    <body style="height: 100%">
-        <div class="h-100 d-flex align-items-center justify-content-center">
-            <div class="bg-dark w-auto h-auto opacity-50 border border-success rounded text-light p-2 ">
-                <p>
-                    <b>Nazwa użytkownika:</b> {{ reservation.username }}
-                </p>
-                <p>
-                    <b>Adres email:</b> {{ reservation.email }}
-                </p>
-                <p>
-                    <b>Treść wiadomości:</b> {{ reservation.message }}
-                </p>
-                <p>
-                    <b>Nr telefonu:</b> {{ reservation.phoneNumber }}
-                </p>
-                <p>
-                    <b>Data utworzenia:</b> {{ reservation.createdAt|date("d/m/Y h:m:s") }}
-                </p>
-                <p>
-                    Na liście zarezerwowanych gekonów znajdują się
-                </p>
-                <h3>Gekony:</h3>
-                <ul class="reservationGecksList list-group">
-                    {% for gecko in reservation.gecks %}
-                        <li class="list-group-item"> {{ gecko }} </li>
-                    {% endfor %}
-                </ul>
-            <div>
+    {% extends "/reservations/reservationBase.html.twig" %}
+
+    {% block leftTitle %}
+        <h3> Rezerwacja: </h3>
+    {% endblock %}
+        
+    {% block leftBody %}
+        <div>
+            <p>
+                <h5>Nazwa użytkownika:</h5> {{ reservation.username }}
+            </p>
+            <p>
+                <h5>Adres email:</h5> {{ reservation.email }}
+            </p>
+            <p>
+                <h5>Treść wiadomości:</h5> {{ reservation.message }}
+            </p>
+            <p>
+                <h5>Nr telefonu:</h5> {{ reservation.phoneNumber }}
+            </p>
+            <p>
+                <h5>Data utworzenia:</h5> {{ reservation.createdAt|date("d/m/Y h:m:s") }}
+            </p>
+
+            {% if is_granted('ROLE_SUPERADMIN') and not reservation.accepted %}
+            <a href="{{ path('handle_reservation', {'id': reservation.id, 'action': "accept"}) }}">
+                <button type="button" class="btn btn-info w-100 my-2" >Accept</button>
+            </a> 
+                
+            <a href="{{ path('handle_reservation', {'id': reservation.id, 'action': "decline"}) }}">
+                <button type="button" class="btn btn-danger w-100" >Reject</button>
+            </a> 
+        {% elseif reservation.accepted %}
+            <button class="btn btn-success mt-2 w-100"> Rezerwacja zaakceptowana! </button>
+        {% else %}
+            <button class="btn btn-info mt-2 w-100"> Rezerwacja w trakcie rozpatrywania </button>
+        {% endif %}
         </div>
-    </body>
-</html>
+        
+    {% endblock %}
+
+    {% block rightTitle %}
+        <h3> Lista rezerwowanych gekonów: </h3>
+    {% endblock %}
+    
+    {% block rightBody %}
+        <ul class="list-group">
+            {% for gecko in reservation.gecks %}
+                <li class="list-group-item"> {{ gecko }} </li>
+            {% endfor %}
+        </ul>
+    {% endblock %}
+    

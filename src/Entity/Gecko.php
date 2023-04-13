@@ -2,13 +2,17 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Controller\CreateGeckoAction;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Entity\EntityInterface\DateTimeEntityInterface;
+use App\Entity\EntityInterface\ReservableEntityInterface;
 use App\Repository\GeckoRepository;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
+use Symfony\Component\Validator\Constraints\Collection;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -16,28 +20,32 @@ use Symfony\Component\HttpFoundation\File\File;
 
 
 
+
+
+
 /**
  * @ORM\Entity(repositoryClass=GeckoRepository::class)
  * @Vich\Uploadable
- * @ApiResource(
- *      itemOperations={
- *          "get",
- *          "put"
- *      },
- *      collectionOperations={
- *          "post"={
- *              "method"="POST",
- *              "controller"=CreateGeckoAction::class,
- *              "defaults"={"_api_receive"=false},
- *              "denormalization_context"={
- *                  "groups"={"post-by-form"}
- *              },
- *          },
- *          "get",
+ * @ApiFilter(
+ *      SearchFilter::class,
+ *      properties={
+ *          "geckType": "exact",
  *      }
  * )
+ * @ApiResource(
+ *      itemOperations={
+ *          "get"
+ *      },
+ *      collectionOperations={
+ *          "get"={
+ *              "normalization_context"={
+ *                  "groups"={"get-geckos-for-display"}
+ *              }
+ *          }
+ *      }     
+ * )
  */
-class Gecko implements DateTimeEntityInterface
+class Gecko implements DateTimeEntityInterface, ReservableEntityInterface
 {
     /**
      * @ORM\Id
@@ -48,40 +56,42 @@ class Gecko implements DateTimeEntityInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups("post-by-form")
+     * @Groups("get-geckos-for-display")
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups("post-by-form")
+     * @Groups("get-geckos-for-display")
      */
     private $sex;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups("post-by-form")
+     * @Groups("get-geckos-for-display")
      */
     private $price;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups("post-by-form")
+     * @Groups("get-geckos-for-display")
      */
     private $geckType;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups("get-geckos-for-display")
      */
     private $reserved;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\ManyToMany(targetEntity="Reservation", mappedBy="gecks")
      */
-    private $requestedForReservation; 
+    private $reservation;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("get-geckos-for-display")
      */
     private $filename;
 
@@ -95,6 +105,10 @@ class Gecko implements DateTimeEntityInterface
      */
     private $createdAt;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default" : 0}, nullable=true)
+     */
+    private $requestedForReservation;
 
     public function getId(): ?int
     {
@@ -137,9 +151,18 @@ class Gecko implements DateTimeEntityInterface
         return $this;
     }
 
-    public function getGeckType(): ?int
+    public function getGeckType(): ?string
     {
-        return $this->geckType;
+        switch ($this->geckType) {
+            case 1:
+                return "Lamparci";
+            case 2:
+                return "Gruboogonowy";
+            case 3:
+                return "Nowa Kaledonia";
+            default: 
+                return null;
+        }
     }
 
     public function setGeckType(int $geckType): self
@@ -162,7 +185,7 @@ class Gecko implements DateTimeEntityInterface
         return $this;
     }
 
-    public function getFilename(): string
+    public function getFilename(): ?string
     {
         return $this->filename;
     }
@@ -201,7 +224,7 @@ class Gecko implements DateTimeEntityInterface
         return $this;
     }
 
-    public function isRequestedForReservation(): bool
+    public function isRequestedForReservation(): ?bool
     {
         return $this->requestedForReservation;
     }
@@ -213,8 +236,14 @@ class Gecko implements DateTimeEntityInterface
         return $this;
     }
 
+    public function getReservation(): Reservation
+    {
+        return $this->reservation[0];
+    }    
+
     public function __toString(): string
     {
-        return $this->id . "." . $this->name . " " . $this->sex;
+        return $this->id . ". " . $this->name . " " . $this->sex;
     }
+    
 }

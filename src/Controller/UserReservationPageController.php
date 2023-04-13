@@ -29,7 +29,6 @@ class UserReservationPageController extends AbstractController
     {
         $this->fetcher = $fetcher;
         $this->doctrine = $doctrine;
-        $this->mailer = $mailer;
     }
 
     /**
@@ -37,22 +36,11 @@ class UserReservationPageController extends AbstractController
      */
     public function reservationPage(Request $request, $ids): Response
     {
-
         $intIds = array_map('intval', explode(",", $ids));
 
         $em = $this->doctrine->getManager();
 
         $gecks = $this->fetcher->fetchForReferencesById(Gecko::class, $intIds, $em);
-
-        foreach( $gecks as $gecko ) {
-            if($gecko->isReserved()) {
-                $message = "Gekon ";
-                $message .= $gecko;
-                $message .= " jest juz zarezerwowany";
-
-                throw new ItemAlreadyReservedException($message);
-            }
-        }
 
         if ($gecks->count() != count($intIds)) {
             throw $this->createNotFoundException(
@@ -70,29 +58,23 @@ class UserReservationPageController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-
             $reservation = $form->getData();
-            $reservation->setCreatedAt(new DateTime());
-            $reservation->setUniqId(uniqid());
-            $this->mailer->sendCreateReservationNotification($reservation);
 
-            try {
-                
+            // try {
+
                 $em->persist($reservation);
                 $em->flush();
-    
+
                 // toDo set flashes
 
                 return new RedirectResponse("https://smilinggeckos.com");
                 
-            } catch (Exception $e) {
-                if($e->getCode() === 19) {
-                    throw new ItemAlreadyReservedException("Przynajmniej jeden z gekonów jest już zarezerwowany");
-                }
-            }
+            // } catch (Exception $e) {
+            //     if($e->getCode() === 19) {
+            //         throw new ItemAlreadyReservedException("Przynajmniej jeden z gekonów jest już zarezerwowany");
+            //     } else dump($e); die;
+            // }
         }
-
-        // ToDo jeśli nie ma gekonow w post, to wróc
 
         return $this->renderForm('reservations/reservationFormPage.html.twig', [
             'form' => $form,
@@ -103,13 +85,8 @@ class UserReservationPageController extends AbstractController
     /**
      * @Route("/show_reservation/{uniqId}")
      */
-    public function showReservation(string $uniqId): Response
+    public function showReservation(Reservation $reservation): Response
     {
-        $em = $this->doctrine->getManager();
-        $repository = $em->getRepository(Reservation::class);
-
-        $reservation = $repository->findOneBy(['uniqId' => $uniqId]);
-        
         return $this->render('reservations/showReservation.html.twig', 
     [
         "reservation" => $reservation

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Form\Type\GeckoType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -16,7 +17,6 @@ class DefaultController extends AbstractController
      */
     public function index()
     {
-        return "jax";
+        return $this->renderForm('bundles/EasyAdminBundle/geckoFormPage.html.twig');
     }
-
 }

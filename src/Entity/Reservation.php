@@ -19,17 +19,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 
 /**
- * @ApiResource(
- *      itemOperations={
- *          "get",
- *          "put",
- *      },
- *      collectionOperations={
- *          "get",
- *          "post"
- *      }
- * )
  * @ORM\Entity(repositoryClass=ReservationRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class Reservation implements DateTimeEntityInterface
 {
@@ -41,13 +32,13 @@ class Reservation implements DateTimeEntityInterface
     private $id;
 
     /**
-     * @ManyToMany(targetEntity="App\Entity\Gecko")
+     * @ManyToMany(targetEntity="App\Entity\Gecko", inversedBy="reservation")
      * @JoinTable(name="reserved_geckos",
      *      joinColumns={@JoinColumn(name="reservation_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@JoinColumn(name="gecko_id", referencedColumnName="id", unique=true)}
+     *      inverseJoinColumns={@JoinColumn(name="gecko_id", referencedColumnName="id")}
      *      )
      */
-    private $gecks;
+    public $gecks;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -101,13 +92,18 @@ class Reservation implements DateTimeEntityInterface
      */
     private $uniqId;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default" : 0})
+     */
+    private $alreadySeen;
+    
+
     public function __construct()
     {
-        $gecks = new ArrayCollection();
-        $this->setGecks($gecks);
+        $this->gecks = new ArrayCollection();
     }
 
-    public function getGecks()
+    public function getGecks(): Collection
     {
         return $this->gecks;
     }
@@ -216,7 +212,7 @@ class Reservation implements DateTimeEntityInterface
         return $this;
     }
 
-    public function getUniqId(): string
+    public function getUniqId(): ?string
     {
         return $this->uniqId;
     }
@@ -227,4 +223,58 @@ class Reservation implements DateTimeEntityInterface
 
         return $this;
     }
+
+    public function isAlreadySeen(): bool
+    {
+        return $this->alreadySeen;
+    }
+
+    public function setAlreadySeen(bool $seen):self
+    {
+        $this->alreadySeen = $seen;
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->username . " | " . $this->email;
+    }
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreatedAtValue(): void
+    {
+        $this->createdAt = new DateTime();
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setUniqIdValue(): void
+    {
+        $this->uniqId = uniqid();
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setGecksRequested(): void
+    {
+        foreach ($this->gecks as $gecko)
+        {
+            $gecko->isRequestedForReservation() ?: $gecko->setRequestedForReservation(true);
+        }
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setNotSeen(): void
+    {
+        $this->alreadySeen = false;
+        
+    }
+
+
 }
