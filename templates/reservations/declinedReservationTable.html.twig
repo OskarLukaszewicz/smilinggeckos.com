@@ -5,6 +5,7 @@
             <th>Phone number</th>
             <th>Email</th>
             <th>Message</th>
+            <th>Note</th>
             <th>Geckos</th>
             <th>Created</th>
             <th>Accept</th>
@@ -15,8 +16,16 @@
                     <td>{{ reservation.id }}</td>
                     <td class="col-1"> {{ reservation.phoneNumber }} </td>
                     <td class="col-2" > {{ reservation.email }} </td>
-                    <td class="col-3"> {{ reservation.message }} </td>
-                    <td class="col-3">
+                    <td class="col-2"> {{ reservation.message }} </td>
+                    <td class="col-2"> 
+                        <form action="{{ path('handle_reservation', {'id': reservation.id, 'action': "saveNote"}) }}">
+                            <textarea name="note" rows="3" style="margin-bottom:1px; background-color:rgba(0,0,0,0);border:none;font-size:14px;" class="form-control p-0">{{reservation.note ?: "Miejsce na notatkę:"}}</textarea>
+                            <button type="submit" class="btn btn-info w-100">
+                                save
+                            </button>
+                        </form> 
+                    </td>
+                    <td class="col-2">
                         <ul style="list-style-type:none;">
                             {% for geck in reservation.gecks %} 
                                 <li>{{ geck }}</li>

@@ -18,6 +18,7 @@ use DateTime;
  *      },
  *      collectionOperations={
  *          "get",
+ *          "post"
  *      }
  * )
  * @ORM\Entity(repositoryClass=CommentRepository::class)
@@ -28,6 +29,7 @@ class Comment implements DateTimeEntityInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"get-blog-post-with-comments"})
      */
     private $id;
 

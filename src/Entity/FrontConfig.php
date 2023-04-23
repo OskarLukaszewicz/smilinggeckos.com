@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
- *      collectionOperations={},
+ *      collectionOperations={"get"},
  *      itemOperations={"get"}
  * )
  * @ORM\Entity(repositoryClass=FrontConfigRepository::class)
@@ -54,7 +54,7 @@ class FrontConfig
 
     public function addColor(): self
     {
-        array_push($this->colors, $this->color);
+        is_array($this->colors) ? array_push($this->colors, $this->color) : $this->setColors($newColors = []);
 
         $this->setColor(null);
         
@@ -70,6 +70,7 @@ class FrontConfig
 
     public function getColor(): ?string
     {
+
         return $this->color;
     }
 

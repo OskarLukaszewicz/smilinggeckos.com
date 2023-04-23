@@ -96,6 +96,11 @@ class Reservation implements DateTimeEntityInterface
      * @ORM\Column(type="boolean", options={"default" : 0})
      */
     private $alreadySeen;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $note;
     
 
     public function __construct()
@@ -220,6 +225,18 @@ class Reservation implements DateTimeEntityInterface
     public function setUniqId(string $uniqId): self
     {
         $this->uniqId = $uniqId;
+
+        return $this;
+    }
+
+    public function getNote(): ?string
+    {
+        return $this->note;
+    }
+
+    public function setNote(string $note): self
+    {
+        $this->note = $note;
 
         return $this;
     }

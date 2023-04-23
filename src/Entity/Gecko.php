@@ -51,6 +51,7 @@ class Gecko implements DateTimeEntityInterface, ReservableEntityInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("get-geckos-for-display")
      */
     private $id;
 
@@ -102,6 +103,7 @@ class Gecko implements DateTimeEntityInterface, ReservableEntityInterface
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups("get-geckos-for-display")
      */
     private $createdAt;
 
@@ -243,7 +245,7 @@ class Gecko implements DateTimeEntityInterface, ReservableEntityInterface
 
     public function __toString(): string
     {
-        return $this->id . ". " . $this->name . " " . $this->sex;
+        return $this->name . " " . $this->sex;
     }
     
 }

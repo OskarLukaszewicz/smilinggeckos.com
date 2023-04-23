@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use App\Entity\EntityInterface\DateTimeEntityInterface;
 use App\Repository\BlogPostRepository;
 use DateTimeInterface;
@@ -11,7 +13,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use DateTime;
+use Doctrine\ORM\Mapping\OrderBy;
 use Symfony\Component\Serializer\Annotation\Groups;
+
 
 
 
@@ -32,6 +36,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *          }
  *      }
  * )
+ * @ApiFilter(OrderFilter::class, properties={"createdAt": "DESC",})
  * @ORM\Entity(repositoryClass=BlogPostRepository::class)
  */
 class BlogPost implements DateTimeEntityInterface
@@ -40,6 +45,7 @@ class BlogPost implements DateTimeEntityInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"get-blog-posts", "get-blog-post-with-comments"})
      */
     private $id;
 
@@ -70,6 +76,7 @@ class BlogPost implements DateTimeEntityInterface
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="blogPost")
+     * @OrderBy({"createdAt" = "DESC"})
      * @ApiSubresource
      * @Groups({"get-blog-post-with-comments"})
      */

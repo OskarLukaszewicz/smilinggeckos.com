@@ -42,7 +42,7 @@ class DashboardController extends AbstractDashboardController
         
         $repository = $this->em->getRepository(FrontConfig::class);
 
-        $config = $repository->findOneBy([]);
+        $config = $repository->findOneBy([]) ?: $config = new FrontConfig();
 
         $form = $this->createForm(ColorPickerType::class, $config);
         $form->handleRequest($request);

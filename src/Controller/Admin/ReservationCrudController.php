@@ -12,6 +12,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use App\Service\Mailer;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ReservationCrudController extends AbstractCrudController
@@ -58,11 +59,9 @@ class ReservationCrudController extends AbstractCrudController
     /**
      * @Route("/admin/reservation_list/{id}/{action}", name="handle_reservation", requirements={"id" = "\d+"})
      */
-    public function handleReservationAction(int $id, string $action): RedirectResponse
+    public function handleReservationAction(Reservation $reservation, string $action, Request $request): RedirectResponse
     {
         $em = $this->doctrine->getManager();
-        $repository = $em->getRepository(Reservation::class);
-        $reservation = $repository->find($id);
 
         switch ($action) {
             case "accept":
@@ -88,6 +87,9 @@ class ReservationCrudController extends AbstractCrudController
                 break;
             case "delete":
                 $em->remove($reservation);
+                break;
+            case "saveNote":
+                $reservation->setNote($request->query->get("note"));
                 break;
         }
 
