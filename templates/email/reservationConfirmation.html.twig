@@ -5,12 +5,12 @@
 {% endblock %}
 
 {% block container %}
-    <a href="https://smilinggeckos.com" target="_blank"><img class="logo" src="http://localhost:8000/images/logo.jpg"  /></a>
+    <a href="{{ domain }}" target="_blank"><img class="logo" style="width: 60%;max-width: 12em;min-width: 7em;border-radius: 50%;display: block;margin-left: auto;margin-right: auto;" src="{{ domain }}/images/logo.jpg"  /></a>
     <h2>
         Cześć {{ reservation.username }},
     </h2>
     <p>
-        otrzymaliśmy informację o złożonej przez Ciebie rezerwacji na stronie hodowlii <a href="https://smilinggeckos.com" target="_blank">SmilingGeckos.</a>
+        otrzymaliśmy informację o złożonej przez Ciebie rezerwacji na stronie hodowlii <a href="{{ domain }}" target="_blank">SmilingGeckos.</a>
     </p>
     <p>
         Na liście zarezerwowanych gekonów znajdują się

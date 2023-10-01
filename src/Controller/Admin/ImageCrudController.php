@@ -22,7 +22,7 @@ class ImageCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')->hideOnForm()->setFormTypeOptions(['required' => false]),
-            ImageField::new('url', 'Image')->setBasePath('images/')->setUploadDir('public/images/')->hideOnForm(),
+            ImageField::new('url', 'Image')->setBasePath('static/media')->setUploadDir('public/static/media')->hideOnForm(),
             TextareaField::new('file')->setFormType(VichFileType::class)->onlyOnForms(),
         ];
     }

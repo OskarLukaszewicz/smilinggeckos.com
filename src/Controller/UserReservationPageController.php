@@ -7,8 +7,6 @@ use App\Exception\ItemAlreadyReservedException;
 use App\Form\Type\ReservationType;
 use App\Service\ByIdFetcher;
 use App\Service\Mailer;
-use DateTime;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -60,20 +58,18 @@ class UserReservationPageController extends AbstractController
 
             $reservation = $form->getData();
 
-            // try {
+            try {
 
                 $em->persist($reservation);
                 $em->flush();
 
-                // toDo set flashes
-
-                return new RedirectResponse("https://smilinggeckos.com");
+                return new RedirectResponse("http://localhost:8000");
                 
-            // } catch (Exception $e) {
-            //     if($e->getCode() === 19) {
-            //         throw new ItemAlreadyReservedException("Przynajmniej jeden z gekonów jest już zarezerwowany");
-            //     } else dump($e); die;
-            // }
+            } catch (Exception $e) {
+                if($e->getCode() === 19) {
+                    throw new ItemAlreadyReservedException("Przynajmniej jeden z gekonów jest już zarezerwowany");
+                } else dump($e); die;
+            }
         }
 
         return $this->renderForm('reservations/reservationFormPage.html.twig', [

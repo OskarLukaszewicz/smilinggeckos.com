@@ -36,6 +36,9 @@ class GeckoType extends AbstractType
                 'label' => 'label.file',
                 'required' => false
             ])
+            ->add('breedingNumber', TextType::class, [
+                'required' => false
+            ])
             ->add('reserved', HiddenType::class, [
                 'data' => false
             ]);

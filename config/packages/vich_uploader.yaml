@@ -4,7 +4,7 @@ vich_uploader:
   mappings:
     images:
       uri_prefix: /images
-      upload_destination: "%kernel.project_dir%/public/images"
+      upload_destination: "%kernel.project_dir%/public/static/media"
       namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
 # uri prefix - by what uri to find our resource
 # upload destination - a path to upload destination

@@ -6,6 +6,7 @@ twig:
     "%kernel.project_dir%/templates/bundles/EasyAdminBundle": admin
   globals:
     domain: "%env(DOMAIN)%"
+    contact_mail: "%env(CONTACT_MAIL)%"
 when@test:
   twig:
     strict_variables: true

@@ -38,15 +38,19 @@
     </style>
 {% endblock %}
 
-<div class="container">
+<div style="word-spacing:normal;background-color:#ffffff;font-family:Raleway,Arial,sans-serif;width: 100%;margin: auto;padding: 5px;min-width: 250px;max-width: 800px;">
 {% block container %}
     
 {% endblock %}
 </div>
 <br>
 {% block footer %}
-    <div class="container footer">
-        <p style="opacity: 0.5;color: gray;">Mail wygenerowany automatycznie, w razie pytań prosimy pisać na <a href="mailto:smiling.geckos.kontakt@gmail.com">smiling.geckos.kontakt@gmail.com</a> </p>
+    <div style="word-spacing:normal;background-color:#ffffff;font-family:Raleway,Arial,sans-serif;width: 100%;margin: auto;padding: 5px;min-width: 250px;max-width: 800px; color: #ff5722;text-align: center;margin-top:20px;">
+        <hr>
+        <p>Smiling Geckos <br> Karina Łukaszewicz-Kaczmarek <br>
+            Numer rachunku: 68102049000000820233313238</p>
+        <hr>
+        <p style="opacity: 0.5;color: gray;">Mail wygenerowany automatycznie, w razie pytań prosimy pisać na <a href="mailto:{{ contact_mail }}">{{ contact_mail }}</a></p>
         <b>SmilingGeckos</b>
     </div>
 {% endblock %}

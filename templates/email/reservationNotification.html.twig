@@ -5,9 +5,9 @@
 {% endblock %}
 
 {% block container %}
-    <a href="https://smilinggeckos.com" target="_blank"><img class="logo" src="http://localhost:8000/images/logo.jpg"  /></a>
+    <a href="{{ domain }}" target="_blank"><img class="logo" style="width: 60%;max-width: 12em;min-width: 7em;border-radius: 50%;display: block;margin-left: auto;margin-right: auto;" src="{{ domain }}/images/logo.jpg"  /></a>
         <h2>
-            W serwisie zostało złożone nowe <a href="{{ domain }}/admin/"  target="_blank"> zamówienie: </a>
+            W serwisie zostało złożone nowe <a href="{{ domain }}/show_reservation/{{ reservation.uniqId }}" target="_blank"> zamówienie: </a>
         </h2>
         <div style="margin:7px">
         <p>

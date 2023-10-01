@@ -101,6 +101,8 @@ class Reservation implements DateTimeEntityInterface
      * @ORM\Column(type="text", nullable=true)
      */
     private $note;
+
+    private $captchaCode;
     
 
     public function __construct()
@@ -251,6 +253,16 @@ class Reservation implements DateTimeEntityInterface
         $this->alreadySeen = $seen;
 
         return $this;
+    }
+
+    public function getCaptchaCode()
+    {
+        return $this->captchaCode;
+    }
+
+    public function setCaptchaCode($captchaCode)
+    {
+        $this->captchaCode = $captchaCode;
     }
 
     public function __toString(): string

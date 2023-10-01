@@ -1,19 +1,16 @@
+{# <!doctype html><html lang="en"><head><link rel="icon" href="/favicon.ico"/><link rel="manifest" href="/manifest.json"/><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="description" content="Web site created using create-react-app"/><title>SmilingGeckos</title><link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Teko:wght@400;500&display=swap" rel="stylesheet"/><script defer="defer" type="text/javascript" src="https://kit.fontawesome.com/2e09f7049d.js" crossorigin="anonymous"></script><script type="text/javascript" defer="defer" src={{asset('/static/js/main.4852a2ee.js')}}></script><link href={{asset('assets/static/css/main.ce69643c.css')}} rel="stylesheet"></head><body><div id="fb-root"></div><script async defer="defer" crossorigin="anonymous" src="https://connect.facebook.net/pl_PL/sdk.js#xfbml=1&version=v15.0" nonce="SExjCsXo"></script><noscript>You need to enable JavaScript to run this app.</noscript><div id="root"></div></body></html> #}
+
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-        {% endblock %}
-
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
+        <!-- ... -->
+        {{ encore_entry_link_tags('app') }}
+        {{ encore_entry_script_tags('app') }}
     </head>
     <body>
-        {% block body %}{% endblock %}
+
+        <div id="root"></div>
+	
+        
     </body>
 </html>

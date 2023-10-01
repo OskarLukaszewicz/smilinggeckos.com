@@ -75,7 +75,7 @@ class BlogPost implements DateTimeEntityInterface
     private $author;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="blogPost")
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="blogPost", cascade={"remove"})
      * @OrderBy({"createdAt" = "DESC"})
      * @ApiSubresource
      * @Groups({"get-blog-post-with-comments"})

@@ -11,6 +11,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
@@ -36,6 +37,7 @@ class GeckoCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')->hideOnForm()->setFormTypeOptions(['required' => false]),
+            TextField::new('breedingNumber', 'Rack system id'),
             BooleanField::new('reserved')->hideOnForm(),
             "name",
             ChoiceField::new('sex')->setChoices(
@@ -45,6 +47,7 @@ class GeckoCrudController extends AbstractCrudController
                 ]
             ),
             'price',
+            IntegerField::new('weight'),
             TextField::new('geckType', 'Species'),
             ChoiceField::new('geckType')->setChoices(
                 [
@@ -55,7 +58,7 @@ class GeckoCrudController extends AbstractCrudController
             )->onlyOnForms(),
             DateTimeField::new('createdAt')->setFormTypeOptions(['required' => false])->hideOnForm(),
             TextareaField::new('file')->setFormType(VichFileType::class)->onlyOnForms(),
-            ImageField::new('filename', 'Image')->setBasePath('images/')->setUploadDir('public/images/')->hideOnForm(),
+            ImageField::new('filename', 'Image')->setBasePath('static/media')->setUploadDir('public/static/media')->hideOnForm(),
         ];
     }
 

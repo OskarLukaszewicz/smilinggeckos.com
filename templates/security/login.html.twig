@@ -1,22 +1,23 @@
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
-<form action="{{ path('security_login') }}" method="post">
-    <div>
-        <div class="form-group">
-            <label class="form-control-label required" for="username">Username</label>
-            <input type="text" id="username" name="_username" required="required" class="form-control">
-        </div>
-        <div class="form-group">
-            <label class="form-control-label required" for="password">Password</label>
-            <input type="password" id="password" name="_password" required="required" class="form-control">
-        </div>
-        <div class="form-group">
-            <button type="submit" id="Login" name="Login" class="btn-secondary btn">Login</button>
-        </div>
-        <div>
-            <p> {{ error }} </p>
-        </div>
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-        <input type="hidden" name="_target_path" value="{{ app.request.get('redirect_to') }}">
+
+<div class="p-5" style="background-color: #2e282a; height:100%;">
+    <h2 style="color:#E1D9D1; text-align: center; padding-bottom:10px;">Smilinggeckos admin panel login</h2>
+    <div style="background-color: #ff5722; border-radius:10px; border:1px solid #E1D9D1; align-content: center; margin: 0 auto;" class="p-5 col-12 col-md-6" >
+        <form action="{{ path('security_login') }}" method="post">
+            <div class="form-group">
+                <label class="form-control-label required" style="color:#E1D9D1" for="username" >Username</label>
+                <input value="{{ last_username }}" type="text" required="required" id="username" name="_username" style="border-radius:5px; border: 1px solid #E1D9D1" required="required" class="form-control">
+            </div>
+            <div class="form-group">
+                <label class="form-control-label required" style="color:#E1D9D1" for="password">Password</label>
+                <input type="password" id="password"  name="_password" style="border-radius:5px; border: 1px solid #E1D9D1" required="required" class="form-control">
+            </div>
+            <div class="form-group">
+                <button type="submit" id="Login" name="Login" style="border-radius:5px; border: 1px solid #E1D9D1; color:#E1D9D1" class="btn-secondary btn">Login</button>
+            </div>
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+            <input type="hidden" name="_target_path" value="{{ app.request.get('redirect_to') }}">
+        </form>
     </div>
-</form>
+</div>

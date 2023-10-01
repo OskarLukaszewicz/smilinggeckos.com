@@ -1,25 +1,23 @@
 api_platform:
+  # defaults:
+  #   pagination_client_enabled: true
+  # collection:
+  #   pagination:
+  #   enabled_parameter_name: pagination # optional
   mapping:
-    paths: ["%kernel.project_dir%/src/Entity"]
+    paths: [
+        "%kernel.project_dir%/src/Entity",
+        # "%kernel.project_dir%/config/routes/api_platform.yaml",
+      ]
   patch_formats:
     mime_types: ["multipart/form-data"]
     json: ["application/merge-patch+json"]
   swagger:
     versions: [3]
   metadata_backward_compatibility_layer: false
-  # collection:
-  #   pagination:
-  #     # enabled: false
-  #     page_parameter_name: _page
-  #     # client_enabled: true
-  #     # enabled_parameter_name: pagination
-  #     items_per_page: 10
-  #     client_items_per_page: true # pozawala definiowac userowi ile itemow na strone, domyslnie disabled
-  #     items_per_page_parameter_name: itemsPerPage # nazwa wlasciwosci
-  #     maximum_items_per_page: 20
-  #     partial: true #nie wykonuje count query wiec jest szybciej, masz dostep tylko do aktualnej i nastepnej strony
-  #     client_partial: true #pozwala decydowac klinetowi
-  #     partial_parameter_name: "partial" # partial=true w ultu zeby wlaczyc
+  collection:
+    pagination:
+      items_per_page: 10
   exception_to_status:
-    App\Exception\EmptyBodyException: 400 #definiuje jaki status ma zostac wyrzucony  przy danym wyjatku
+    App\Exception\EmptyBodyException: 400
     App\Exception\InvalidConfirmationTokenException: 404

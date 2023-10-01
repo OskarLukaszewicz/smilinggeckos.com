@@ -11,16 +11,23 @@ class Mailer
     private $mailer;
     private $twig;
     private $serviceEmailAdress;
+    private $contactEmailAdress;
+    private $mailerFlag;
 
-    public function __construct(MailerInterface $mailer, Environment $twig, string $serviceEmailAdress)
+    public function __construct(MailerInterface $mailer, Environment $twig, string $serviceEmailAdress, string $contactEmailAdress, bool $mailerFlag)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;
         $this->serviceEmailAdress = $serviceEmailAdress;
+        $this->contactEmailAdress = $contactEmailAdress;
+        $this->mailerFlag = $mailerFlag;
     }
 
     public function sendCreateReservationNotification(Reservation $reservation)
     {
+        if (!$this->mailerFlag) {return null;}
+        
+
         $body = $this->twig->render(
             'email/reservationConfirmation.html.twig', 
             [
@@ -45,7 +52,7 @@ class Mailer
 
         $email = (new Email())
             ->from($this->serviceEmailAdress)
-            ->to($this->serviceEmailAdress)
+            ->to($this->contactEmailAdress)
             ->subject('Nowa rezerwacja została złożona')
             ->html($body);
 
@@ -54,6 +61,9 @@ class Mailer
 
     public function sendReservationAcceptedConfirmation(Reservation $reservation)
     {
+
+        if (!$this->mailerFlag) {return null;}
+
         $body = $this->twig->render(
             'email/reservationAccepted.html.twig',
             [

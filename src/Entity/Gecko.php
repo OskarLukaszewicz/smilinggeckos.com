@@ -112,6 +112,17 @@ class Gecko implements DateTimeEntityInterface, ReservableEntityInterface
      */
     private $requestedForReservation;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+     private $breedingNumber;
+
+     /**
+      * @ORM\Column(type="integer", nullable=true)
+      * @Groups("get-geckos-for-display")
+      */
+     private $weight;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -192,7 +203,7 @@ class Gecko implements DateTimeEntityInterface, ReservableEntityInterface
         return $this->filename;
     }
 
-    public function setFilename(string $filename): self
+    public function setFilename(?string $filename): self
     {
         $this->filename = $filename;
         
@@ -241,7 +252,31 @@ class Gecko implements DateTimeEntityInterface, ReservableEntityInterface
     public function getReservation(): Reservation
     {
         return $this->reservation[0];
-    }    
+    }
+    
+    public function getBreedingNumber(): ?string
+    {
+        return $this->breedingNumber;
+    }
+
+    public function setBreedingNumber($breedingNumber): self
+    {
+        $this->breedingNumber = $breedingNumber;
+
+        return $this;
+    }
+
+    public function getWeight(): ?int
+    {
+        return $this->weight;
+    }
+
+    public function setWeight($weight): self
+    {
+        $this->weight = $weight;
+
+        return $this;
+    }
 
     public function __toString(): string
     {
