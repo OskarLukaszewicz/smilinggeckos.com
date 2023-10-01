@@ -83,9 +83,7 @@ class DashboardController extends AbstractDashboardController
     public function removeColorAction(int $key): Response
     {
 
-        // dump("jax");die;
         $config = $this->em->getRepository(FrontConfig::class)->findOneBy([]);
-        // $colors = $config->getColors();
 
         $config->removeColor($key);
 
@@ -113,6 +111,5 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Posts', 'fa fa-file-text', BlogPost::class);
         yield MenuItem::linkToCrud('Comments', 'fa fa-comment', Comment::class);
         yield MenuItem::linkToCrud('Images', 'fa fa-file', Image::class);
-        // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
     }
 }

@@ -7,11 +7,11 @@
         <form action="{{ path('security_login') }}" method="post">
             <div class="form-group">
                 <label class="form-control-label required" style="color:#E1D9D1" for="username" >Username</label>
-                <input value="{{ last_username }}" type="text" required="required" id="username" name="_username" style="border-radius:5px; border: 1px solid #E1D9D1" required="required" class="form-control">
+                <input {% if app.environment == "dev" %} value="{{ 'admin123' }}" {% endif %} value="{{ last_username }}" type="text" required="required" id="username" name="_username" style="border-radius:5px; border: 1px solid #E1D9D1" required="required" class="form-control">
             </div>
             <div class="form-group">
                 <label class="form-control-label required" style="color:#E1D9D1" for="password">Password</label>
-                <input type="password" id="password"  name="_password" style="border-radius:5px; border: 1px solid #E1D9D1" required="required" class="form-control">
+                <input {% if app.environment == "dev" %} value="{{ 'admin123' }}" {% endif %} type="password" id="password"  name="_password" style="border-radius:5px; border: 1px solid #E1D9D1" required="required" class="form-control">
             </div>
             <div class="form-group">
                 <button type="submit" id="Login" name="Login" style="border-radius:5px; border: 1px solid #E1D9D1; color:#E1D9D1" class="btn-secondary btn">Login</button>

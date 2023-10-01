@@ -9,9 +9,6 @@
         </tr>
     </thead>
 
-    {# {{ dump(app.request.attributes.all()['_controller'][1]) }} #}
-    
-
     {% for comment in entity.instance.comments %}
         <tr>
             <td>{{ comment.id }}</td>

@@ -16,7 +16,6 @@ class LogoutController extends AbstractController
     public function index(): Response
     {
 
-        // add flash
         $url = $this->getParameter('DOMAIN');
 
         return new RedirectResponse($url);

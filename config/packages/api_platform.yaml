@@ -1,14 +1,6 @@
 api_platform:
-  # defaults:
-  #   pagination_client_enabled: true
-  # collection:
-  #   pagination:
-  #   enabled_parameter_name: pagination # optional
   mapping:
-    paths: [
-        "%kernel.project_dir%/src/Entity",
-        # "%kernel.project_dir%/config/routes/api_platform.yaml",
-      ]
+    paths: ["%kernel.project_dir%/src/Entity"]
   patch_formats:
     mime_types: ["multipart/form-data"]
     json: ["application/merge-patch+json"]
