@@ -58,7 +58,7 @@ class DashboardController extends AbstractDashboardController
 
         $notSeenReservations = $this->em->getRepository(Reservation::class)->findBy(['alreadySeen' => false]);
 
-        $response = $this->renderForm('@EasyAdmin/welcome.html.twig', 
+        $response = $this->renderForm('bundles/EasyAdminBundle/welcome.html.twig', 
             [
                 "user" => $this->getUser(),
                 "form" => $form,
