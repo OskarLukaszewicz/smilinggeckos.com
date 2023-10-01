@@ -1,0 +1,59 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block main %}
+    <div>
+        <h2>
+            Welcome to the admin panel {{ user }}!
+        </h2>
+    </div>
+
+    <hr>
+
+    <div class="card">
+        <div class="card-header">
+            New reservations:
+
+        </div>
+        <div class="card-body">
+            <ul class="list-group">
+                {% for reservation in reservations %}
+                    <li class="list-group-item">
+                        <h4>
+                            <a href="{{ domain }}/show_reservation/{{ reservation.uniqId }}"> {{ reservation }} </a>
+                        </h4>
+                        <p>
+                            {{ reservation.message }}
+                        </p>
+                        {% for gecko in reservation.gecks %}
+                            {{ gecko }}
+                        {% endfor %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <hr>
+
+    <div>
+        {{ form(form) }}
+    </div>
+
+    <div class="card" style="margin-bottom:100px;">
+        <div class="card-header">
+            Color pallete for the gecko offer list:
+        </div>
+        <div class="card-body">
+            {% for key, color in colors %}
+                <a href="{{ path('remove_color', {"key": key}) }}">
+                    <span style="border:1px solid black;width:25px;height:25px;margin:4px;background-color:{{color}};display:inline-block;border-radius:5px">
+                    </span>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+
+    
+
+{% endblock %}
