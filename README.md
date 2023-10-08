@@ -25,7 +25,7 @@ Follow these steps to set up the Gekota Shop App:
    
 2. Navigate to the project directory:
 
-        smilinggeckos.com
+       cd smilinggeckos.com
 
 3. Install the project dependencies using Composer:
 
