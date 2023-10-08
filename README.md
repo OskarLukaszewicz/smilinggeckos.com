@@ -29,7 +29,7 @@ Follow these steps to set up the Gekota Shop App:
 
 3. Install the project dependencies using Composer:
 
-        composer install
+       composer install
 
 4. Create database (SQLite needed), migration, migrate and load data fixtures:
 
